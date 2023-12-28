@@ -1,7 +1,15 @@
+"use client"
 import React from "react";
 import { Typography, Box, TextField, Checkbox, Button } from "@mui/material";
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
+
+  const router = useRouter();
+  const handleOnClick = () => {
+    router.push('/movies-list');
+  };
+
   return (
     <Box
       sx={{
@@ -71,8 +79,9 @@ const LoginForm = () => {
         <Typography sx={{ color: "#FFFFFF" }}>Remember me</Typography>
       </Box>
       <Button
+        onClick={handleOnClick}
         sx={{
-          width: "300px",
+          width: "303px",
           borderRadius: "10px",
           backgroundColor: "#2BD17E",
           color: "white",
@@ -84,7 +93,7 @@ const LoginForm = () => {
             backgroundColor: "#2BD17E",
           },
           "&:active": {
-            backgroundColor: "#2BD17E",
+            backgroundColor: "#2BD17E8",
           },
         }}
       >

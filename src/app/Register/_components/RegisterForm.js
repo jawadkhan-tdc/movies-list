@@ -1,7 +1,16 @@
+"use client";
 import React from "react";
 import { Typography, Box, TextField, Checkbox, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
+
+  const router = useRouter();
+
+  const handleOnAccount = () => {
+    router.push('/');
+  };
+
   return (
     <Box
       sx={{
@@ -92,7 +101,7 @@ const RegisterForm = () => {
       </Box>
       <Button
         sx={{
-          width: "300px",
+          width: "303px",
           borderRadius: "10px",
           backgroundColor: "#2BD17E",
           color: "white",
@@ -104,9 +113,10 @@ const RegisterForm = () => {
             backgroundColor: "#2BD17E",
           },
           "&:active": {
-            backgroundColor: "#2BD17E",
+            backgroundColor: "#2BD17E8",
           },
         }}
+        onClick={handleOnAccount}
       >
         Signup
       </Button>
