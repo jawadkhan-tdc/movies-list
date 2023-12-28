@@ -1,14 +1,43 @@
-"use client"
+"use client";
 import React from "react";
 import { Typography, Box, TextField, Checkbox, Button } from "@mui/material";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
+import { login } from "../../../../lib/redux/slices/authSlice/authThunk";
 
 const LoginForm = () => {
-
   const router = useRouter();
-  const handleOnClick = () => {
-    router.push('/movies-list');
+  const dispatch = useDispatch();
+
+  const isLoading = useSelector((state) => state.auth.loading);
+
+  const handleLogin = async (data) => {
+    await dispatch(login(data));
+    let token = localStorage.getItem("token");
+    if (token !== null) {
+      router.push("/movies-list");
+      toast.success("Login Successful");
+      return;
+    }
   };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: async (data) => {
+      handleLogin(data);
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email().required("Email is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+  });
 
   return (
     <Box
@@ -29,6 +58,11 @@ const LoginForm = () => {
         <Box sx={{ mb: 2 }}>
           <TextField
             placeholder="Email"
+            onChange={(event) =>
+              formik.setFieldValue("email", event.target.value)
+            }
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
             sx={{
               width: "100%",
               border: "1px solid rgba(38, 39, 41, 0.1)",
@@ -45,6 +79,11 @@ const LoginForm = () => {
               },
             }}
           />
+          {formik.touched.email && formik.errors.email && (
+            <div style={{ color: "red", fontSize: "12px", marginLeft: "15px" }}>
+              *{formik.errors.email}
+            </div>
+          )}
         </Box>
         <Box sx={{ mb: 2 }}>
           <TextField
@@ -64,7 +103,17 @@ const LoginForm = () => {
                 color: "#FFFFFF",
               },
             }}
+            onChange={(event) =>
+              formik.setFieldValue("password", event.target.value)
+            }
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
           />
+          {formik.touched.password && formik.errors.password && (
+            <div style={{ color: "red", fontSize: "12px", marginLeft: "15px" }}>
+              *{formik.errors.password}
+            </div>
+          )}
         </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
@@ -79,7 +128,8 @@ const LoginForm = () => {
         <Typography sx={{ color: "#FFFFFF" }}>Remember me</Typography>
       </Box>
       <Button
-        onClick={handleOnClick}
+        onClick={formik.handleSubmit}
+        disabled={isLoading}
         sx={{
           width: "303px",
           borderRadius: "10px",
@@ -98,6 +148,15 @@ const LoginForm = () => {
         }}
       >
         Login
+        {/* {isLoading ? (
+          <Image
+            src="/loading.svg"
+            alt="Loading ..."
+            style={{ height: "35px" }}
+          />
+        ) : (
+          "Login"
+        )} */}
       </Button>
     </Box>
   );
