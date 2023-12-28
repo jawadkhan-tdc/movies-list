@@ -58,11 +58,13 @@ const LoginForm = () => {
         <Box sx={{ mb: 2 }}>
           <TextField
             placeholder="Email"
+            type="email"
             onChange={(event) =>
               formik.setFieldValue("email", event.target.value)
             }
             onBlur={formik.handleBlur}
             value={formik.values.email}
+            required
             sx={{
               width: "100%",
               border: "1px solid rgba(38, 39, 41, 0.1)",
@@ -103,11 +105,13 @@ const LoginForm = () => {
                 color: "#FFFFFF",
               },
             }}
+            type="password"
             onChange={(event) =>
               formik.setFieldValue("password", event.target.value)
             }
             onBlur={formik.handleBlur}
             value={formik.values.password}
+            required
           />
           {formik.touched.password && formik.errors.password && (
             <div style={{ color: "red", fontSize: "12px", marginLeft: "15px" }}>

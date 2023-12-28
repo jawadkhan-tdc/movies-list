@@ -1,15 +1,15 @@
-"use client"
-import React from 'react';
-import { Box, Button } from '@mui/material';
-import { useRouter } from 'next/navigation';
+"use client";
+import React from "react";
+import { Box, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
-function HomePage() {
+const HomePage = () => {
   const router = useRouter();
 
   const buttonStyle = {
     width: "303px",
     borderRadius: "10px",
-    backgroundColor: "#2BD17E", 
+    backgroundColor: "#2BD17E",
     color: "white",
     mt: 2,
     height: "54px",
@@ -24,11 +24,11 @@ function HomePage() {
   };
 
   const handleOnCreateAccount = () => {
-    router.push('/Register');
+    router.push("/register");
   };
 
   const handleOnLogin = () => {
-    router.push('/login');
+    router.push("/login");
   };
 
   return (
@@ -48,10 +48,10 @@ function HomePage() {
       </Button>
 
       <Button sx={buttonStyle} onClick={handleOnLogin}>
-       Login
+        Login
       </Button>
     </Box>
   );
-}
+};
 
 export default HomePage;
