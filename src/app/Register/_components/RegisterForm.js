@@ -163,7 +163,7 @@ const RegisterForm = () => {
           )}
         </Box>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+      {/* <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
         <Checkbox
           sx={{
             "& .MuiCheckbox-root": {
@@ -173,7 +173,7 @@ const RegisterForm = () => {
           }}
         />
         <Typography sx={{ color: "#FFFFFF" }}>Remember me</Typography>
-      </Box>
+      </Box> */}
       <Button
         sx={{
           width: "303px",
