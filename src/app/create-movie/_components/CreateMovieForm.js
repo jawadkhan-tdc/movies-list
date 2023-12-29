@@ -1,19 +1,69 @@
+"use client"
 import React from "react";
-import { Typography, Box, TextField, Button } from "@mui/material";
+import { useState } from "react";
+import { Typography, Box, TextField, Button, IconButton } from "@mui/material";
 import Image from "next/image";
+import CloseIcon from "@mui/icons-material/Close";
 
 const CreateMovieForm = () => {
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+  };
+
   return (
-    <Box sx={{ backgroundColor: "#093545", height: "100vh" }}>
-      <Typography sx={{ fontSize: "48px", fontWeight: 600, color: "#FFFFFF", padding: 12 }}>Create a new movie</Typography>
+    <Box sx={{
+      backgroundColor: "#093545", margin: 0,
+      padding: 0,
+      height: "100vh"
+    }}>
+      <Typography sx={{ fontSize: "48px", fontWeight: 600, color: "#FFFFFF", padding: 10 }}>Create a new movie</Typography>
 
       <Box sx={{ display: "flex", gap: 10 }}>
-        <Box sx={{ ml: 12 }}>
-          <Image
-            src="/Group35.png"
-            width={400}
-            height={500}
-          />
+        <Box sx={{ ml: 10, position: "relative" }}>
+          {selectedImage ? (
+            <>
+              <Image src={selectedImage} width={350} height={450} />
+              <IconButton
+                onClick={handleRemoveImage}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  color: "#FFFFFF",
+                  "&:hover": {
+                    backgroundColor: "#2BD17E",
+                  },
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </>
+          ) : (
+            <label htmlFor="image-upload">
+              <Image src="/Group35.png" width={350} height={450}/>
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+            </label>
+          )}
         </Box>
         <Box>
           <Box sx={{ mb: 2 }}>
@@ -59,7 +109,7 @@ const CreateMovieForm = () => {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Button sx={{
               width: "170px",
-              border : "1px solid #FFFFFF",
+              border: "1px solid #FFFFFF",
               borderRadius: "10px",
               backgroundColor: "#2BD17E",
               color: "white",
@@ -76,24 +126,24 @@ const CreateMovieForm = () => {
               },
             }}>Cancel</Button>
 
-            <Button  sx={{
-            width: "170px",
-              border : "1px solid #FFFFFF",
-            borderRadius: "10px",
-            backgroundColor: "#2BD17E",
-            color: "white",
-            mt: 2,
-            height: "54px",
-            fontSize: "18px",
-            textTransform: "capitalize",
-            "&:hover": {
+            <Button sx={{
+              width: "170px",
+              border: "1px solid #FFFFFF",
+              borderRadius: "10px",
+              backgroundColor: "#2BD17E",
+              color: "white",
+              mt: 2,
+              height: "54px",
+              fontSize: "18px",
+              textTransform: "capitalize",
+              "&:hover": {
                 backgroundColor: "#2BD17E",
                 border: "none",
-            },
-            "&:active": {
+              },
+              "&:active": {
                 backgroundColor: "#2BD17E8",
-            },
-        }}>Submit</Button>
+              },
+            }}>Submit</Button>
           </Box>
         </Box>
       </Box>

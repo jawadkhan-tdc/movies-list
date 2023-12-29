@@ -24,7 +24,7 @@ const HomePage = () => {
   };
 
   const handleOnCreateAccount = () => {
-    router.push("/register");
+    router.push("/Register");
   };
 
   const handleOnLogin = () => {
