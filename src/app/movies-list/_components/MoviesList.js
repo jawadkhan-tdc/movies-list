@@ -8,27 +8,36 @@ import {
   CardMedia,
   CardContent,
 } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { logout } from "../../../../lib/redux/slices/authSlice/authSlice";
+import CustomPagination from "@/app/_components/pagination/CustomPagination";
 import { getMovies } from "../../../../lib/redux/slices/movieSlice/movieThunk";
+import { updateMoviesList } from "../../../../lib/redux/slices/movieSlice/movieSlice";
 
 function MoviesList() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [movieData, setMovieData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(undefined);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await dispatch(getMovies());
-      console.log("response is ", response);
-      setMovieData(response?.payload);
+      const response = await dispatch(getMovies(currentPage));
+      setMovieData(response?.payload?.movies);
+      dispatch(updateMoviesList(response?.payload?.movies));
+      setTotalPages(response?.payload?.totalPages);
     };
 
     fetchMovies();
-  }, []);
+  }, [currentPage]);
+
+  const handlePageChange = (value) => {
+    setCurrentPage(value);
+  };
 
   const handleIconClick = () => {
     router.push("/create-movie");
@@ -99,7 +108,7 @@ function MoviesList() {
               sx={{
                 display: "flex",
                 gap: 2,
-                margin: { lg: 10, md: 8, sm: 5, xs: 1 },
+                margin: { lg: 7, md: 7, sm: 5, xs: 1 },
               }}
             >
               <Typography
@@ -124,7 +133,7 @@ function MoviesList() {
               sx={{
                 display: "flex",
                 gap: 2,
-                margin: { lg: 10, md: 8, sm: 5, xs: 1 },
+                margin: { lg: 7, md: 8, sm: 5, xs: 1 },
               }}
             >
               <Typography
@@ -132,7 +141,7 @@ function MoviesList() {
                   fontSize: "16px",
                   color: "#FFFFFF",
                   fontWeight: 700,
-                  mt: { lg: 3, md: 2.1, sm: 1.9, xs: 1 },
+                  mt: { lg: 1, md: 2.1, sm: 1.9, xs: 1 },
                 }}
               >
                 Logout
@@ -140,7 +149,7 @@ function MoviesList() {
               <LogoutIcon
                 sx={{
                   color: "#FFFFFF",
-                  mt: { lg: 3, md: 2.1, sm: 1.9, xs: 1 },
+                  mt: { lg: 1, md: 2.1, sm: 1.9, xs: 1 },
                   fontSize: "28px",
                   cursor: "pointer",
                 }}
@@ -156,7 +165,7 @@ function MoviesList() {
               gap: "20px",
               padding: "20px",
               maxWidth: "1400px",
-              marginBottom: "120px",
+              marginBottom: "20px",
             }}
           >
             {movieData?.map((movie) => (
@@ -167,6 +176,7 @@ function MoviesList() {
                   backgroundColor: "#092C39",
                   borderRadius: "12px",
                   margin: "10px",
+                  zIndex: 2,
                 }}
               >
                 <CardMedia
@@ -195,6 +205,13 @@ function MoviesList() {
                 </CardContent>
               </Card>
             ))}
+          </Box>
+          <Box>
+            <CustomPagination
+              count={totalPages}
+              onChange={handlePageChange}
+              currentPage={currentPage}
+            />
           </Box>
         </>
       )}
